@@ -1,4 +1,4 @@
-package wirevg.apps.viewer.handlers;
+package wirevg.apps.viewer.resources.handlers;
 
 import java.net.URL;
 import java.util.ArrayList;

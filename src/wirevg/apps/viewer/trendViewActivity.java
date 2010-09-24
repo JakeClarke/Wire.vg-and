@@ -1,6 +1,6 @@
 package wirevg.apps.viewer;
 
-import wirevg.apps.viewer.handlers.trendHandler;
+import wirevg.apps.viewer.resources.handlers.trendHandler;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;

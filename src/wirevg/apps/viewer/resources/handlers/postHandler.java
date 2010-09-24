@@ -1,4 +1,4 @@
-package wirevg.apps.viewer.handlers;
+package wirevg.apps.viewer.resources.handlers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,7 +15,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import android.net.Uri;
 import android.util.Log;
-import wirevg.apps.viewer.Post;
+import wirevg.apps.viewer.resources.Post;
 
 public class postHandler extends DefaultHandler{
 	
@@ -67,7 +67,7 @@ public class postHandler extends DefaultHandler{
 	public void getPostsFilter(String filterType, String filterValue, String key)
 	{
 		try {
-			URL apiURL = new URL("http://wire.vg/api/?key=" + key + "&format=xml&resource=list&filtertype=" + filterType + "&filtervalue=" + filterValue);
+			URL apiURL = new URL(ApiData.BaseUrl + "&format=xml&resource=post&filtertype=" + filterType + "&filtervalue=" + filterValue);
 			getPosts(apiURL);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

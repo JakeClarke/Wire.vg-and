@@ -2,7 +2,8 @@ package wirevg.apps.viewer;
 
 import java.util.ArrayList;
 
-import wirevg.apps.viewer.handlers.postHandler;
+import wirevg.apps.viewer.resources.Post;
+import wirevg.apps.viewer.resources.handlers.postHandler;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;

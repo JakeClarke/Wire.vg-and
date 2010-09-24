@@ -1,4 +1,6 @@
-package wirevg.apps.viewer;
+package wirevg.apps.viewer.resources;
+
+import java.util.ArrayList;
 
 import android.net.Uri;
 
@@ -16,4 +18,10 @@ public class Post {
 	{
 		return this.Title + "\n- [" + this.FeedName + "] \n- Votes: " + this.Votes +  " | Views: " + this.Views ;
 	}
+	
+	public ArrayList<Post> Related = new ArrayList<Post>();
+	
+	
+	
+	
 }
