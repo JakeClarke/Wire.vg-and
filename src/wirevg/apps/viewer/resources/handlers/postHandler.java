@@ -34,11 +34,11 @@ public class postHandler extends DefaultHandler{
 	public static final String FILTERTYPE_VOTES = "votes";
 	public static final String FILTERTYPE_VIEWS = "views";
 	
-	public void getPostsViaTrend(String trend, String key){
+	public void getPostsViaTrend(String trend){
 		
 		URL apiURL;
 		try {
-			apiURL = new URL("http://wire.vg/api/?key=" + key + "&format=xml&resource=search&searchterm=" + trend);
+			apiURL = new URL(ApiData.BaseUrl + "resource=posts&filtertype=search&filtervalue=" + trend);
 			getPosts(apiURL);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -64,10 +64,10 @@ public class postHandler extends DefaultHandler{
 		}
 	}
 	
-	public void getPostsFilter(String filterType, String filterValue, String key)
+	public void getPostsFilter(String filterType, String filterValue)
 	{
 		try {
-			URL apiURL = new URL(ApiData.BaseUrl + "&format=xml&resource=post&filtertype=" + filterType + "&filtervalue=" + filterValue);
+			URL apiURL = new URL(ApiData.BaseUrl + "format=xml&resource=posts&filtertype=" + filterType + "&filtervalue=" + filterValue);
 			getPosts(apiURL);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -75,8 +75,8 @@ public class postHandler extends DefaultHandler{
 		}
 	}
 	
-	public void getPostsViaChannel(String hashCode, String key) {
-		this.getPostsFilter(FILTERTYPE_CHANNEL, hashCode, key);
+	public void getPostsViaChannel(String hashCode) {
+		this.getPostsFilter(FILTERTYPE_CHANNEL, hashCode);
 	}
 	
 	@Override
@@ -146,41 +146,13 @@ public class postHandler extends DefaultHandler{
 		
 
 		String data = (new String(ch).substring(start, start + length));
-		//clean up the posts.
-		//data = data.replace('"', '');
-		//data = data.trim();
-
+		
 		if(this.InTitle) {
-			
-			// start giant bomb hack
-			/*
-			boolean containsT = false;
-			int pos = 0;
-			for(char cha : ch)
-			{
-				if(cha == '\t')
-				{
-					containsT = true;
-					ch[pos] = ' ';
-					pos++;
-				}
-			}
-
-			if (containsT) {
-				length = ch.length;
-				data = (new String(ch).substring(start, start + length));
-				data = data.replace("\t", "");
-				data = data.replace("\n", "");
-			}
-			*/
-			
-			// end giant bomb hack;
 			
 			
 			this.currentPost.Title = this.currentPost.Title + data;
 			this.currentPost.Title = this.currentPost.Title.replace("\t", "");
 			this.currentPost.Title = this.currentPost.Title.replace("\n", "");
-			//this.currentPost.Title = this.currentPost.Title.replaceAll("\\b\\s{2,}\\b", " ");
 		}
 		else if(this.InLongURL) {
 			this.currentPost.LongURL = Uri.parse(data);

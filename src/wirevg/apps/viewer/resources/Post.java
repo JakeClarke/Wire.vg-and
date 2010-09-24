@@ -12,6 +12,7 @@ public class Post {
 	public Uri LongURL;
 	public Uri Image;
 	public String FeedName = "";
+	public String FeedSlug = "";
 
 	@Override
 	public String toString()
@@ -21,7 +22,7 @@ public class Post {
 	
 	public ArrayList<Post> Related = new ArrayList<Post>();
 	
-	
+	public ArrayList<Comment> Comments = new ArrayList<Comment>();
 	
 	
 }

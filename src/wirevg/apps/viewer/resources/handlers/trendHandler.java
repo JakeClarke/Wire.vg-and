@@ -19,8 +19,7 @@ public class trendHandler extends DefaultHandler {
 	public void getTrends(String key)
 	{
 		try {
-			URL url = new URL("http://wire.vg/api/?key=" + key
-					+ "&format=xml&resource=trend");
+			URL url = new URL(ApiData.BaseUrl + "resource=trends");
 			SAXParserFactory fac = SAXParserFactory.newInstance();
 			SAXParser sp = fac.newSAXParser();
 			XMLReader xr = sp.getXMLReader();

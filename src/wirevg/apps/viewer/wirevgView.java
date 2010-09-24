@@ -32,8 +32,6 @@ public class wirevgView extends Activity implements OnClickListener {
         termsBox = (EditText)findViewById(R.id.searchbox);
         visitB = (Button)findViewById(R.id.VisitSiteButton);
         visitB.setOnClickListener(this);
-        viewB = (Button)findViewById(R.id.TopViewButton);
-        viewB.setOnClickListener(this);
         votedB = (Button)findViewById(R.id.TopVotedButton);
         votedB.setOnClickListener(this);
         
@@ -52,17 +50,13 @@ public class wirevgView extends Activity implements OnClickListener {
     		i.putExtra(ListPosts.KEY_PARAMETER, termsBox.getText().toString());
     		startActivity(i);
     	} else if (view.equals(visitB)){
+    		// load wire.vg in the default browser
     		Intent i = new Intent(Intent.ACTION_VIEW,Uri.parse("http://wire.vg/"));
-    		startActivity(i);
-    	} else if (view.equals(viewB)){
-    		Intent i = new Intent(this, ListPosts.class);
-    		i.putExtra(ListPosts.MODE, ListPosts.MODE_HASHCODE);
-    		i.putExtra(ListPosts.KEY_PARAMETER, "views");
     		startActivity(i);
     	} else if (view.equals(votedB)){
     		Intent i = new Intent(this, ListPosts.class);
     		i.putExtra(ListPosts.MODE, ListPosts.MODE_HASHCODE);
-    		i.putExtra(ListPosts.KEY_PARAMETER, "votes");
+    		i.putExtra(ListPosts.KEY_PARAMETER, "frontpage");
     		startActivity(i);
     	}
     }

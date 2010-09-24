@@ -77,22 +77,19 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		String mode = extras.getString(MODE);
 		if (mode.equals(MODE_SEARCH)){
 			ph = new postHandler();
-			ph.getPostsViaTrend(extras.getString(KEY_PARAMETER), "public");
+			ph.getPostsViaTrend(extras.getString(KEY_PARAMETER));
 			this.newTitle = "Search results: " + extras.getString(KEY_PARAMETER);
 			this.posts = ph.Posts;
 		} else if (mode.equals(MODE_HASHCODE)){
 			ph = new postHandler();
-			ph.getPostsViaChannel(extras.getString(KEY_PARAMETER), "public");
+			ph.getPostsViaChannel(extras.getString(KEY_PARAMETER));
+			this.posts = ph.Posts;
 			this.newTitle = "Get posts by hash: " + extras.getString(KEY_PARAMETER);
 			
-		}
-		
-		//this.posts.addAll(ph.Posts);
+		} 
 		ListPosts.this.Status = STATUS_COMPLETE;
 		mHandler.post(mUpdateResults);
 		
-		
-		//Post[] postArray = (Post[]) this.posts.toArray();
 		
 		
 
