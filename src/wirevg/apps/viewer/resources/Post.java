@@ -13,11 +13,12 @@ public class Post {
 	public Uri Image;
 	public String FeedName = "";
 	public String FeedSlug = "";
+	public int CommentCount = 0;
 
 	@Override
 	public String toString()
 	{
-		return this.Title + "\n- [" + this.FeedName + "] \n- Votes: " + this.Votes +  " | Views: " + this.Views ;
+		return this.Title + "\n- [" + this.FeedName + "] \n- Votes: " + this.Votes + "| Comments: " + this.CommentCount;
 	}
 	
 	public ArrayList<Post> Related = new ArrayList<Post>();

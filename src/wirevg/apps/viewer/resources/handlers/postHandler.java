@@ -15,17 +15,33 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import android.net.Uri;
 import android.util.Log;
+import wirevg.apps.viewer.resources.Comment;
 import wirevg.apps.viewer.resources.Post;
 
 public class postHandler extends DefaultHandler{
 	
-	boolean InShortURL = false;
-	boolean InLongURL = false;
-	boolean InTitle = false;
-	boolean InVote = false;
-	boolean InFeedName = false;
-	boolean InImage = false;
-	boolean InView = false;
+	boolean inShortURL = false;
+	boolean inLongURL = false;
+	boolean inTitle = false;
+	boolean inVote = false;
+	boolean inFeedName = false;
+	boolean inImage = false;
+	boolean inView = false;
+	boolean inCommentCount = false;
+	
+	
+	// comment flags
+	boolean inComment = false;
+	boolean inCommentID = false;
+	boolean inCommentAuthor = false;
+	boolean inCommentAuthorLink = false;
+	boolean inCommentTimestamp = false;
+	boolean inCommentText = false;
+	boolean inCommentVotes = false;
+	
+	Comment currentComment;
+	
+	
 	Post currentPost;
 	public ArrayList<Post> Posts;
 	
@@ -75,6 +91,18 @@ public class postHandler extends DefaultHandler{
 		}
 	}
 	
+	
+	public void getPost(int postID)
+	{
+		try {
+			URL apiURL = new URL(ApiData.BaseUrl + "format=xml&resource=post&filtertype=id&filtervalue=" + postID);
+			getPosts(apiURL);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void getPostsViaChannel(String hashCode) {
 		this.getPostsFilter(FILTERTYPE_CHANNEL, hashCode);
 	}
@@ -82,62 +110,133 @@ public class postHandler extends DefaultHandler{
 	@Override
 	public void startElement(String uri, String name, String qname, Attributes attri)
 	{
+		
 		if (name.trim().equalsIgnoreCase("shortlink")) {
-			InShortURL = true;
+			inShortURL = true;
 		}
 		else if (name.trim().equalsIgnoreCase("post")) {
 			currentPost = new Post();
 			this.Posts.add(currentPost);
 		}
 		else if (name.trim().equalsIgnoreCase("title")) {
-			InTitle = true;
+			inTitle = true;
 		}
 		else if (name.trim().equalsIgnoreCase("shortlink")) {
-			InShortURL = true;
+			inShortURL = true;
 		}
 		else if (name.trim().equalsIgnoreCase("name")) {
-			InFeedName = true;
+			inFeedName = true;
 		}
 		else if (name.trim().equalsIgnoreCase("link")) {
-			InLongURL= true;
+			inLongURL= true;
 		}
 		else if (name.trim().equalsIgnoreCase("image")) {
-			InImage= true;
+			inImage= true;
 		}
 		else if (name.trim().equalsIgnoreCase("votes")) {
-			InVote = true;
+			inVote = true;
 		}
 		else if (name.trim().equalsIgnoreCase("views")) {
-			InView = true;
+			inView = true;
 		}
+		else if (name.trim().equalsIgnoreCase("commentcount")) {
+			inCommentCount = true;
+		}
+		// begin comment clauses
+		else if (name.trim().equalsIgnoreCase("comment")) {
+			// prepare for a new comment
+			this.currentComment = new Comment();
+			this.currentPost.Comments.add(currentComment);
+			// allow comment data to be captured
+			this.inComment = true;
+			
+		} 
+		else if ((name.trim().equalsIgnoreCase("id")) && inComment) 
+		{
+			this.inCommentID = true;
+		}
+		else if ((name.trim().equalsIgnoreCase("author")) && inComment)
+		{
+			this.inCommentAuthor = true;
+		}
+		else if ((name.trim().equalsIgnoreCase("authorlink")) && inComment)
+		{
+			this.inCommentAuthorLink = true;
+		}
+		else if ((name.trim().equalsIgnoreCase("timestamp")) && inComment)
+		{
+			this.inCommentTimestamp = true;
+		}
+		else if ((name.trim().equalsIgnoreCase("text")) && inComment)
+		{
+			this.inCommentText = true;
+		}
+		else if ((name.trim().equalsIgnoreCase("vote")) && inComment)
+		{
+			this.inCommentVotes = true;
+		}
+		
 		
 	}
 	
 	public void endElement(String uri, String name, String qname) {
 		if (name.trim().equalsIgnoreCase("shortlink")) {
-			InShortURL = false;
+			inShortURL = false;
 		}
 		else if (name.trim().equalsIgnoreCase("views")) {
-			InView = false;
+			inView = false;
 		}
 		else if (name.trim().equalsIgnoreCase("title")) {
-			InTitle = false;
+			inTitle = false;
 		}
 		else if (name.trim().equalsIgnoreCase("shortlink")) {
-			InShortURL = false;
+			inShortURL = false;
 		}
 		else if (name.trim().equalsIgnoreCase("name"))
 		{
-			InFeedName = false;
+			inFeedName = false;
 		}
 		else if (name.trim().equalsIgnoreCase("link")) {
-			InLongURL = false;
+			inLongURL = false;
 		}
 		else if (name.trim().equalsIgnoreCase("image")) {
-			InImage = false;
+			inImage = false;
 		}
 		else if (name.trim().equalsIgnoreCase("votes")) {
-			InVote = false;
+			inVote = false;
+		}
+		else if (name.trim().equalsIgnoreCase("commentcount")) {
+			inCommentCount = false;
+		}
+		
+		// begin comment clauses
+		else if (name.trim().equalsIgnoreCase("comment")) {
+			this.inComment = false;
+			
+		} 
+		else if ((name.trim().equalsIgnoreCase("id")) && inComment) 
+		{
+			this.inCommentID = false;
+		}
+		else if ((name.trim().equalsIgnoreCase("author")) && inComment)
+		{
+			this.inCommentAuthor = false;
+		}
+		else if ((name.trim().equalsIgnoreCase("authorlink")) && inComment)
+		{
+			this.inCommentAuthorLink = false;
+		}
+		else if ((name.trim().equalsIgnoreCase("timestamp")) && inComment)
+		{
+			this.inCommentTimestamp = false;
+		}
+		else if ((name.trim().equalsIgnoreCase("text")) && inComment)
+		{
+			this.inCommentText = false;
+		}
+		else if ((name.trim().equalsIgnoreCase("vote")) && inComment)
+		{
+			this.inCommentVotes = false;
 		}
 	}
 	
@@ -147,31 +246,55 @@ public class postHandler extends DefaultHandler{
 
 		String data = (new String(ch).substring(start, start + length));
 		
-		if(this.InTitle) {
+		if(this.inTitle) {
 			
 			
 			this.currentPost.Title = this.currentPost.Title + data;
 			this.currentPost.Title = this.currentPost.Title.replace("\t", "");
 			this.currentPost.Title = this.currentPost.Title.replace("\n", "");
 		}
-		else if(this.InLongURL) {
+		else if(this.inLongURL) {
 			this.currentPost.LongURL = Uri.parse(data);
 		}
-		else if(this.InShortURL) {
+		else if(this.inShortURL) {
 			this.currentPost.ShortURL = Uri.parse(data);
 		}
-		else if (this.InImage) {
+		else if (this.inImage) {
 			this.currentPost.Image = Uri.parse(data);
 		}
-		else if(this.InVote) {
+		else if(this.inVote) {
 			this.currentPost.Votes = Integer.parseInt(data);
 		}
-		else if(this.InFeedName) {
+		else if(this.inCommentCount) {
+			this.currentPost.CommentCount = Integer.parseInt(data);
+		}
+		else if(this.inFeedName) {
 			this.currentPost.FeedName = data;
 		}
-		else if(this.InView) {
+		else if(this.inView) {
 			this.currentPost.Views = Integer.parseInt(data);
 		}
+		else if(this.inCommentID) {
+			this.currentComment.ID = Integer.parseInt(data);
+		}
+		else if (this.inCommentAuthor) {
+			this.currentComment.Author = data;
+		}
+		else if (this.inCommentAuthorLink) {
+			this.currentComment.AuthorLink = data;
+		}
+		else if (this.inCommentText) {
+			this.currentComment.Text = data;
+		}
+		else if (this.inCommentTimestamp)
+		{
+			this.currentComment.TimeStamp = Integer.parseInt(data);
+		}
+		else if (this.inCommentVotes)
+		{
+			this.currentComment.Votes = Integer.parseInt(data);
+		}
+		
 	}
 
 	public void startDocument() {
