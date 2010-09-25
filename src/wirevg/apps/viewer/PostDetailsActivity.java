@@ -1,5 +1,11 @@
 package wirevg.apps.viewer;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 import wirevg.apps.viewer.resources.Post;
 import wirevg.apps.viewer.resources.handlers.postHandler;
 import android.app.Activity;
@@ -7,8 +13,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,8 +36,10 @@ public class PostDetailsActivity extends Activity {
 	
 	Button viewPostButton;
 	TextView postTitle;
-	ImageView postImage;
+	
 	TextView commentsView;
+	Handler handler = new Handler();
+	Bitmap postBm;
 	
 	
 	@Override
@@ -38,7 +50,7 @@ public class PostDetailsActivity extends Activity {
         
         this.viewPostButton = (Button)this.findViewById(R.id.viewpostbutton);
         this.postTitle = (TextView)this.findViewById(R.id.posttitle);
-        this.postImage = (ImageView)this.findViewById(R.id.postimage);
+        
         
         this.commentsView = (TextView)this.findViewById(R.id.commenttext);
         
@@ -54,10 +66,8 @@ public class PostDetailsActivity extends Activity {
         ph.getPost(postID);
         this.currentPost = ph.Posts.get(0);
         this.postTitle.setText(this.currentPost.Title);
-        //this.postImage.setImageURI(this.currentPost.Image);
         this.commentsView.setText("Number of comments: " + this.currentPost.Comments.size());
         this.viewPostButton.setOnClickListener(viewPostL);
-        
         
 	}
 
@@ -77,6 +87,25 @@ public class PostDetailsActivity extends Activity {
 		
 	}
 	
+	// method of getting image from web
+	//http://groups.google.com/group/android-developers/browse_thread/thread/8eea6c95a78012ea/2e1e7d581405d422?#2e1e7d581405d422
+	private Bitmap getImageBitmap(String url) { 
+        Bitmap bm = null; 
+        try { 
+            URL aURL = new URL(url); 
+            URLConnection conn = aURL.openConnection(); 
+            conn.connect(); 
+            InputStream is = conn.getInputStream(); 
+            BufferedInputStream bis = new BufferedInputStream(is); 
+            bm = BitmapFactory.decodeStream(bis); 
+            bis.close(); 
+            is.close(); 
+       } catch (IOException e) { 
+           Log.e("PostDetails", "Error getting bitmap", e); 
+       } 
+       return bm; 
+    } 
+	
 	View.OnClickListener viewPostL = new View.OnClickListener() {
 		
 		@Override
@@ -86,4 +115,6 @@ public class PostDetailsActivity extends Activity {
 			startActivity(i);
 		}
 	};
+	
+	
 }
