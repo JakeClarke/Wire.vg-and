@@ -20,6 +20,7 @@ import wirevg.apps.viewer.resources.Post;
 
 public class postHandler extends DefaultHandler{
 	
+	boolean inPostID = false;
 	boolean inShortURL = false;
 	boolean inLongURL = false;
 	boolean inTitle = false;
@@ -111,7 +112,10 @@ public class postHandler extends DefaultHandler{
 	public void startElement(String uri, String name, String qname, Attributes attri)
 	{
 		
-		if (name.trim().equalsIgnoreCase("shortlink")) {
+		if (name.trim().equalsIgnoreCase("id") && !inComment) {
+			inPostID = true;
+		}
+		else if (name.trim().equalsIgnoreCase("shortlink")) {
 			inShortURL = true;
 		}
 		else if (name.trim().equalsIgnoreCase("post")) {
@@ -183,6 +187,9 @@ public class postHandler extends DefaultHandler{
 		if (name.trim().equalsIgnoreCase("shortlink")) {
 			inShortURL = false;
 		}
+		else if (name.trim().equalsIgnoreCase("id") && !inComment) {
+			inPostID = false;
+		}
 		else if (name.trim().equalsIgnoreCase("views")) {
 			inView = false;
 		}
@@ -252,6 +259,9 @@ public class postHandler extends DefaultHandler{
 			this.currentPost.Title = this.currentPost.Title + data;
 			this.currentPost.Title = this.currentPost.Title.replace("\t", "");
 			this.currentPost.Title = this.currentPost.Title.replace("\n", "");
+		}
+		else if(this.inPostID) {
+			this.currentPost.ID = Integer.parseInt(data);
 		}
 		else if(this.inLongURL) {
 			this.currentPost.LongURL = Uri.parse(data);

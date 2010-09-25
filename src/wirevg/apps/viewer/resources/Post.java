@@ -14,6 +14,7 @@ public class Post {
 	public String FeedName = "";
 	public String FeedSlug = "";
 	public int CommentCount = 0;
+	public int ID;
 
 	@Override
 	public String toString()
