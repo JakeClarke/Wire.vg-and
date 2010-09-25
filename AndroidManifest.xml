@@ -18,6 +18,7 @@
         </activity>
 
     <activity android:name=".ListPosts"></activity>
+<activity android:name="PostDetailsActivity"></activity>
 </application>
 
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"><ImageView android:id="@+id/postimage" android:contentDescription="Post Image" android:layout_width="fill_parent" android:layout_height="wrap_content"></ImageView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/posttitle" android:text="POST-TITLE" android:layout_below="@+id/postimage"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMMENTS" android:id="@+id/commenttext" android:layout_below="@+id/viewpostbutton"></TextView>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/viewpostbutton" android:layout_below="@+id/posttitle" android:text="View Post"></Button>
+</RelativeLayout>

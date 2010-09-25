@@ -146,7 +146,8 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 
 	@Override
 	public void onItemClick(AdapterView<?> adpview, View view, int position, long id) {
-		Intent i = new Intent(Intent.ACTION_VIEW, this.posts.get(position).ShortURL);
+		Intent i = new Intent(this, PostDetailsActivity.class);
+		i.putExtra(PostDetailsActivity.KEY_POSTID, this.posts.get(position).ID);
 		startActivity(i);
 	}
 	

@@ -29,6 +29,7 @@ public class postHandler extends DefaultHandler{
 	boolean inImage = false;
 	boolean inView = false;
 	boolean inCommentCount = false;
+	boolean inFeed = false;
 	
 	
 	// comment flags
@@ -112,7 +113,7 @@ public class postHandler extends DefaultHandler{
 	public void startElement(String uri, String name, String qname, Attributes attri)
 	{
 		
-		if (name.trim().equalsIgnoreCase("id") && !inComment) {
+		if (name.trim().equalsIgnoreCase("id") && !inComment && !inFeed) {
 			inPostID = true;
 		}
 		else if (name.trim().equalsIgnoreCase("shortlink")) {
@@ -127,6 +128,9 @@ public class postHandler extends DefaultHandler{
 		}
 		else if (name.trim().equalsIgnoreCase("shortlink")) {
 			inShortURL = true;
+		}
+		else if (name.trim().equalsIgnoreCase("feed")) {
+			inFeed= true;
 		}
 		else if (name.trim().equalsIgnoreCase("name")) {
 			inFeedName = true;
@@ -187,7 +191,7 @@ public class postHandler extends DefaultHandler{
 		if (name.trim().equalsIgnoreCase("shortlink")) {
 			inShortURL = false;
 		}
-		else if (name.trim().equalsIgnoreCase("id") && !inComment) {
+		else if (name.trim().equalsIgnoreCase("id") && inPostID) {
 			inPostID = false;
 		}
 		else if (name.trim().equalsIgnoreCase("views")) {
@@ -198,6 +202,9 @@ public class postHandler extends DefaultHandler{
 		}
 		else if (name.trim().equalsIgnoreCase("shortlink")) {
 			inShortURL = false;
+		}
+		else if (name.trim().equalsIgnoreCase("feed")) {
+			inFeed= false;
 		}
 		else if (name.trim().equalsIgnoreCase("name"))
 		{
