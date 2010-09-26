@@ -8,5 +8,11 @@ public class Comment {
 	public int TimeStamp = 0;
 	public String Text = "";
 	public int Votes = 0;
+	
+	@Override
+	public String toString()
+	{
+		return this.Author + ":\n " + this.Text + "\n" + new java.util.Date(TimeStamp * 1000).toGMTString();
+	}
 
 }

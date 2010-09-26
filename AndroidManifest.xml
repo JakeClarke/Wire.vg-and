@@ -3,21 +3,21 @@
       package="wirevg.apps.viewer">
       
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">
-        <activity android:name=".wirevgView"
-                  android:label="@string/app_name">
+        <activity android:name="MainTabs"
+                  android:label="@string/app_name" android:configChanges="orientation" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/app_name" android:name=".trendViewActivity">
+        <activity android:label="@string/app_name" android:name=".trendViewActivity" android:configChanges="orientation">
             <intent-filter>
                 
                 
             </intent-filter>
         </activity>
 
-    <activity android:name=".ListPosts"></activity>
+    <activity android:name=".ListPosts" android:configChanges="orientation"></activity>
 <activity android:name="PostDetailsActivity"></activity>
 </application>
 

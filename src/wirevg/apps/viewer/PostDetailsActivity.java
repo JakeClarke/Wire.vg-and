@@ -1,27 +1,15 @@
 package wirevg.apps.viewer;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
 import wirevg.apps.viewer.resources.Post;
 import wirevg.apps.viewer.resources.handlers.postHandler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PostDetailsActivity extends Activity {
@@ -38,8 +26,8 @@ public class PostDetailsActivity extends Activity {
 	TextView postTitle;
 	
 	TextView commentsView;
-	Handler handler = new Handler();
-	Bitmap postBm;
+	
+	
 	
 	
 	@Override
@@ -87,25 +75,6 @@ public class PostDetailsActivity extends Activity {
 		
 	}
 	
-	// method of getting image from web
-	//http://groups.google.com/group/android-developers/browse_thread/thread/8eea6c95a78012ea/2e1e7d581405d422?#2e1e7d581405d422
-	private Bitmap getImageBitmap(String url) { 
-        Bitmap bm = null; 
-        try { 
-            URL aURL = new URL(url); 
-            URLConnection conn = aURL.openConnection(); 
-            conn.connect(); 
-            InputStream is = conn.getInputStream(); 
-            BufferedInputStream bis = new BufferedInputStream(is); 
-            bm = BitmapFactory.decodeStream(bis); 
-            bis.close(); 
-            is.close(); 
-       } catch (IOException e) { 
-           Log.e("PostDetails", "Error getting bitmap", e); 
-       } 
-       return bm; 
-    } 
-	
 	View.OnClickListener viewPostL = new View.OnClickListener() {
 		
 		@Override
@@ -115,6 +84,5 @@ public class PostDetailsActivity extends Activity {
 			startActivity(i);
 		}
 	};
-	
 	
 }

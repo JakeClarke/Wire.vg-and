@@ -176,7 +176,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		{
 			while (ListPosts.this.Status == ListPosts.STATUS_RETRIEVING && !timeoutShown)
 			{
-				if(currentMilliSeconds > maxSeconds * 100)
+				if(currentMilliSeconds > maxSeconds * 1000)
 				{
 					h.post(getPostsTimeout);
 					timeoutShown = true;
