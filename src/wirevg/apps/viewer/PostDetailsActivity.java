@@ -1,5 +1,6 @@
 package wirevg.apps.viewer;
 
+import wirevg.apps.viewer.resources.Comment;
 import wirevg.apps.viewer.resources.Post;
 import wirevg.apps.viewer.resources.handlers.postHandler;
 import android.app.Activity;
@@ -26,6 +27,7 @@ public class PostDetailsActivity extends Activity {
 	TextView postTitle;
 	
 	TextView commentsView;
+	TextView feedName;
 	
 	
 	
@@ -38,7 +40,7 @@ public class PostDetailsActivity extends Activity {
         
         this.viewPostButton = (Button)this.findViewById(R.id.viewpostbutton);
         this.postTitle = (TextView)this.findViewById(R.id.posttitle);
-        
+        this.feedName = (TextView)this.findViewById(R.id.feedname);
         
         this.commentsView = (TextView)this.findViewById(R.id.commenttext);
         
@@ -54,8 +56,13 @@ public class PostDetailsActivity extends Activity {
         ph.getPost(postID);
         this.currentPost = ph.Posts.get(0);
         this.postTitle.setText(this.currentPost.Title);
-        this.commentsView.setText("Number of comments: " + this.currentPost.Comments.size());
+        this.feedName.setText(this.currentPost.FeedName);
+        this.commentsView.setText("Number of comments: " + this.currentPost.Comments.size() + "\n");
         this.viewPostButton.setOnClickListener(viewPostL);
+        for(Comment c : this.currentPost.Comments)
+        {
+        	this.commentsView.append(c.toString() + "\n");
+        }
         
 	}
 

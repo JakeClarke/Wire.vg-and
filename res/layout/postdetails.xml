@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/posttitle" android:text="POST-TITLE" android:layout_below="@+id/postimage"></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMMENTS" android:id="@+id/commenttext" android:layout_below="@+id/viewpostbutton"></TextView>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/viewpostbutton" android:layout_below="@+id/posttitle" android:text="View Post"></Button>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/posttitle" android:text="POST-TITLE" android:layout_below="@+id/postimage" android:textSize="15px"></TextView>
+<TextView android:layout_below="@+id/posttitle" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/feedname" android:text="FEED_NAME" android:textColor="#888"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="COMMENTS" android:id="@+id/commenttext" android:layout_below="@+id/viewpostbutton"></TextView>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/viewpostbutton" android:text="View Post" android:layout_below="@+id/feedname" android:layout_marginTop="4px"></Button>
+
+
 </RelativeLayout>
