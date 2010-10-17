@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,6 +25,10 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 	public static final String KEY_PARAMETER = "parameter";
 	static final String STATUS_RETRIEVING = "getting";
 	static final String STATUS_COMPLETE = "complete";
+	public static final String KEY_ORDER = "order";
+	public static final String ORDER_TIME = "time";
+	
+	
 	ProgressDialog progress;
 	
 	postHandler ph;
@@ -47,6 +52,11 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		}
 	};
 	
+	final Runnable getPostsFail = new Runnable() {
+		public void run() {
+			getFailedDialog("Failed to get posts");
+		}
+	};
 	
 	
 	@Override
@@ -71,24 +81,38 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		lv.setOnItemClickListener(this);
 	}
 
-	protected void getPosts() {
+	protected void getPosts() throws Exception {
 		this.posts.clear();
+		
+		
 		Bundle extras = getIntent().getExtras();
-		String mode = extras.getString(MODE);
-		if (mode.equals(MODE_SEARCH)){
-			ph = new postHandler();
-			ph.getPostsViaTrend(extras.getString(KEY_PARAMETER));
+		String mode = extras.getString(MODE) != null ? extras.getString(MODE) : "";
+		
+		// this is not a proper implementation of order.
+		// that would require a number of changes to the post handler
+		String order = extras.getString(KEY_ORDER) != null ?  extras.getString(KEY_ORDER) : "";
+		
+		
+		ph = new postHandler();
+		if (mode.equals(MODE_SEARCH)) {
+			
+			this.posts = ph.getPostsViaSearch(extras.getString(KEY_PARAMETER));
 			this.newTitle = "Search results: " + extras.getString(KEY_PARAMETER);
-			this.posts = ph.Posts;
-		} else if (mode.equals(MODE_HASHCODE)){
-			ph = new postHandler();
-			ph.getPostsViaChannel(extras.getString(KEY_PARAMETER));
-			this.posts = ph.Posts;
+		} else if (mode.equals(MODE_HASHCODE)) {
+			
+			this.posts = ph.getPostsViaChannel(extras.getString(KEY_PARAMETER));
 			this.newTitle = "Get posts by hash: " + extras.getString(KEY_PARAMETER);
 			
-		} 
-		ListPosts.this.Status = STATUS_COMPLETE;
-		mHandler.post(mUpdateResults);
+		} else if (order.equals(ORDER_TIME)) {
+			this.posts = ph.getRecentPosts();
+			this.newTitle = "Recent posts";
+			
+		} else {
+			// nothing will happen
+			this.getFailedDialog("Nothing to get");
+		}
+		
+		
 		
 		
 		
@@ -106,7 +130,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		
 		progress.dismiss();
 		
-		if (ph.Posts.size() == 0)
+		if (this.posts.size() == 0)
 		{
 			
 			noPostsDialog();
@@ -114,30 +138,27 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		
 		this.setTitle(newTitle);
 		
-		for(Post p : ph.Posts){
+		for(Post p : this.posts){
 			aa.add(p);
 		}
 	}
 
 	private void noPostsDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("No posts match the search.");
-		builder.setCancelable(false);
-		builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
-	                ListPosts.this.finish();
-	           }});
-		AlertDialog d = builder.create();
-		d.show();
+		this.getFailedDialog("No posts match the search.");
 	}
 	
 	private void timeOutDialog() {
+		this.getFailedDialog("Get posts timeout.");
+	}
+	
+	private void getFailedDialog(String message) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Get posts timeout.");
+		builder.setMessage(message);
 		builder.setCancelable(false);
 		builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	                ListPosts.this.finish();
+	        	   dialog.dismiss();
+	               ListPosts.this.finish();
 	           }});
 		AlertDialog d = builder.create();
 		d.show();
@@ -155,7 +176,18 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		
 		public void run()
 		{
-			ListPosts.this.getPosts();
+			try {
+				ListPosts.this.getPosts();
+				ListPosts.this.Status = STATUS_COMPLETE;
+				mHandler.post(mUpdateResults);
+			} catch (Exception e) {
+				mHandler.post(getPostsFail);
+				ListPosts.this.Status = STATUS_COMPLETE;
+				e.printStackTrace();
+			}
+			
+			
+			
 		}
 	}
 	

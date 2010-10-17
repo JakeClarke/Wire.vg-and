@@ -1,5 +1,6 @@
 package wirevg.apps.viewer.resources.handlers;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,68 +46,64 @@ public class postHandler extends DefaultHandler{
 	
 	
 	Post currentPost;
-	public ArrayList<Post> Posts;
+	private ArrayList<Post> Posts;
 	
 	public static final String FILTERTYPE_USER = "user";
 	public static final String FILTERTYPE_CHANNEL = "channel";
 	public static final String FILTERTYPE_VOTES = "votes";
 	public static final String FILTERTYPE_VIEWS = "views";
+	public static final String FILTERTYPE_TIME = "time";
 	
-	public void getPostsViaTrend(String trend){
+	public ArrayList<Post> getPostsViaSearch(String trend) throws Exception{
 		
 		URL apiURL;
-		try {
-			apiURL = new URL(ApiData.BaseUrl + "resource=posts&filtertype=search&filtervalue=" + trend);
-			getPosts(apiURL);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+		
+		apiURL = new URL(ApiData.BaseUrl + "resource=posts&filtertype=search&filtervalue=" + trend);
+		return getPosts(apiURL);
 	}
 
-	public void getPosts(URL apiURL) throws FactoryConfigurationError {
-		try {
+	public ArrayList<Post> getPosts(URL apiURL) throws Exception {
+		
 			
-			SAXParserFactory fac = SAXParserFactory.newInstance();
-			SAXParser sp = fac.newSAXParser();
-			XMLReader xr = sp.getXMLReader();
-			xr.setContentHandler(this);
-			xr.setErrorHandler(new errorHandler());
-			String cleanURL = apiURL.toString();
-			cleanURL = cleanURL.replace(" ", "%20");
-			apiURL = new URL(cleanURL);
-			Log.v("wire.vg.posthandler", "Getting posts from url:" + apiURL);
+		SAXParserFactory fac = SAXParserFactory.newInstance();
+		SAXParser sp = fac.newSAXParser();
+		XMLReader xr = sp.getXMLReader();
+		xr.setContentHandler(this);
+		xr.setErrorHandler(new errorHandler());
+		String cleanURL = apiURL.toString();
+		cleanURL = cleanURL.replace(" ", "%20");
+		apiURL = new URL(cleanURL);
+		Log.v("wire.vg.posthandler", "Getting posts from url:" + apiURL);
 			
-			xr.parse(new InputSource(apiURL.openStream()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		xr.parse(new InputSource(apiURL.openStream()));
+			
+		return Posts;
 	}
 	
-	public void getPostsFilter(String filterType, String filterValue)
+	public ArrayList<Post> getPostsFilter(String filterType, String filterValue) throws Exception
 	{
-		try {
-			URL apiURL = new URL(ApiData.BaseUrl + "format=xml&resource=posts&filtertype=" + filterType + "&filtervalue=" + filterValue);
-			getPosts(apiURL);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		URL apiURL = new URL(ApiData.BaseUrl + "format=xml&resource=posts&filtertype=" + filterType + "&filtervalue=" + filterValue);
+		return getPosts(apiURL);
+
 	}
 	
-	
-	public void getPost(int postID)
+	public ArrayList<Post> getRecentPosts() throws Exception
 	{
-		try {
-			URL apiURL = new URL(ApiData.BaseUrl + "format=xml&resource=post&filtertype=id&filtervalue=" + postID);
-			getPosts(apiURL);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		URL apiURL = new URL(ApiData.BaseUrl + "format=xml&resource=posts&order=time");
+		return getPosts(apiURL);
+		
 	}
 	
-	public void getPostsViaChannel(String hashCode) {
-		this.getPostsFilter(FILTERTYPE_CHANNEL, hashCode);
+	public ArrayList<Post> getPost(int postID) throws Exception
+	{
+		URL apiURL = new URL(ApiData.BaseUrl + "format=xml&resource=post&filtertype=id&filtervalue=" + postID);
+		return getPosts(apiURL);
+		
+	}
+	
+	public ArrayList<Post> getPostsViaChannel(String hashCode) throws Exception {
+		return this.getPostsFilter(FILTERTYPE_CHANNEL, hashCode);
 	}
 	
 	@Override

@@ -15,22 +15,33 @@ public class MainTabs extends TabActivity {
         this.setContentView(R.layout.maintabs);
         tabHost = this.getTabHost();
         Intent i;
+        TabHost.TabSpec spec;
         
+        // begin front page definition
         i = new Intent(this, ListPosts.class);
 		i.putExtra(ListPosts.MODE, ListPosts.MODE_HASHCODE);
 		i.putExtra(ListPosts.KEY_PARAMETER, "frontpage");
         
-        TabHost.TabSpec spec;
         spec = tabHost.newTabSpec("frontpage").setIndicator("Frontpage");
         spec.setContent(i);
         this.tabHost.addTab(spec);
         
-        i = new Intent(this, trendViewActivity.class);
+        // begin recent posts definition
+        i = new Intent(this, ListPosts.class);
+        i.putExtra(ListPosts.KEY_ORDER, ListPosts.ORDER_TIME);
         
-        spec = tabHost.newTabSpec("trend").setIndicator("Current trends");
+        spec = tabHost.newTabSpec("recent").setIndicator("Recent");
         spec.setContent(i);
         this.tabHost.addTab(spec);
         
+        // begin current trends tab definition
+        i = new Intent(this, trendViewActivity.class);
+        
+        spec = tabHost.newTabSpec("trends").setIndicator("Current trends");
+        spec.setContent(i);
+        this.tabHost.addTab(spec);
+        
+
 	
 	}
 	
