@@ -22,7 +22,7 @@ public class MainTabs extends TabActivity {
 		i.putExtra(ListPosts.MODE, ListPosts.MODE_HASHCODE);
 		i.putExtra(ListPosts.KEY_PARAMETER, "frontpage");
         
-        spec = tabHost.newTabSpec("frontpage").setIndicator("Frontpage");
+        spec = tabHost.newTabSpec("frontpage").setIndicator("Wire.vg");
         spec.setContent(i);
         this.tabHost.addTab(spec);
         

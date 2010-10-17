@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/layout_root"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:padding="10dp"
+              android:orientation="vertical" android:minWidth="300dp">
+              
+<TextView android:text="USER_HINT" android:id="@+id/dialoghint" android:layout_height="wrap_content" android:layout_width="fill_parent"></TextView>
+<EditText android:id="@+id/useredittext" android:layout_height="wrap_content" android:layout_width="fill_parent"></EditText>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/searchGo" android:text="Go!"></Button>
+</LinearLayout>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import wirevg.apps.viewer.resources.Post;
 import wirevg.apps.viewer.resources.handlers.postHandler;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -12,11 +13,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ListPosts extends ListActivity  implements OnItemClickListener{
 	public static final String MODE = "MODE";
@@ -62,24 +70,39 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
+		aa = new ArrayAdapter<Post>(this, R.layout.postlist_item, this.posts);
+		setListAdapter(aa);
+		
+		refresh();
+		
+		
+		ListView lv = getListView();
+		lv.setOnItemClickListener(this);
+	}
+
+	private void refresh() {
 		progress = ProgressDialog.show(ListPosts.this, "", "Loading please wait...",true, true, new DialogInterface.OnCancelListener(){
 			@Override
 			public void onCancel(DialogInterface arg0) {
 				ListPosts.this.finish();
 			}
 		});
-		aa = new ArrayAdapter<Post>(this, R.layout.postlist_item, this.posts);
-		setListAdapter(aa);
-		
 		XmlThread = new getXmlThead();
 		tout = new timeOutThread(mHandler);
 		tout.start();
 		XmlThread.start();
-		
-		
-		ListView lv = getListView();
-		lv.setOnItemClickListener(this);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflator = getMenuInflater();
+		inflator.inflate(R.menu.mainmenu, menu);
+		return true;
+	}
+	
+	
 
 	protected void getPosts() throws Exception {
 		this.posts.clear();
@@ -172,6 +195,46 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		startActivity(i);
 	}
 	
+	void showSearchDialog(String title, String message, final String mode)
+	{
+		Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.searchdialog);
+		dialog.setTitle(title);
+		TextView dialogHint = (TextView)dialog.findViewById(R.id.dialoghint);
+		dialogHint.setText(message);
+		final EditText searchInput = (EditText)dialog.findViewById(R.id.useredittext);
+		Button searchGoB = (Button)dialog.findViewById(R.id.searchGo);
+		searchGoB.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(ListPosts.this, ListPosts.class);
+				i.putExtra(ListPosts.MODE, mode);
+				i.putExtra(ListPosts.KEY_PARAMETER, searchInput.getText().toString());
+				ListPosts.this.startActivity(i);
+			}
+		});
+		dialog.show();
+		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case R.id.menurefresh:
+			refresh();
+			return true;
+		case R.id.menusearch:
+			showSearchDialog("Keyword Search", "Enter search terms: ", ListPosts.MODE_SEARCH);
+			return true;
+		case R.id.menuhashtag:
+			showSearchDialog("Hashtag Search", "Enter hashtag: ", ListPosts.MODE_HASHCODE);
+			return true;
+		default:
+	        return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	private class getXmlThead extends Thread {
 		
 		public void run()
@@ -222,5 +285,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 				this.currentMilliSeconds = this.currentMilliSeconds + threadWaitMS;
 			}
 		}
+		
+
 	}
 }
