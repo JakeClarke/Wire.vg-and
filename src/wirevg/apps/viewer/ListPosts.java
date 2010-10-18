@@ -134,11 +134,6 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 			// nothing will happen
 			this.getFailedDialog("Nothing to get");
 		}
-		
-		
-		
-		
-		
 
 	}
 	
@@ -160,7 +155,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		}
 		
 		this.setTitle(newTitle);
-		
+		aa.clear();
 		for(Post p : this.posts){
 			aa.add(p);
 		}

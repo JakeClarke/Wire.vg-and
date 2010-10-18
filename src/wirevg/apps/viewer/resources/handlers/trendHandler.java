@@ -1,5 +1,6 @@
 package wirevg.apps.viewer.resources.handlers;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -16,18 +17,15 @@ public class trendHandler extends DefaultHandler {
 	boolean inPhrase = false;
 	public ArrayList<String> phrases = new ArrayList<String>();
 	
-	public void getTrends(String key)
+	public ArrayList<String> getTrends() throws Exception
 	{
-		try {
-			URL url = new URL(ApiData.BaseUrl + "resource=trends");
-			SAXParserFactory fac = SAXParserFactory.newInstance();
-			SAXParser sp = fac.newSAXParser();
-			XMLReader xr = sp.getXMLReader();
-			xr.setContentHandler(this);
-			xr.parse(new InputSource(url.openStream()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		URL url = new URL(ApiData.BaseUrl + "resource=trends");
+		SAXParserFactory fac = SAXParserFactory.newInstance();
+		SAXParser sp = fac.newSAXParser();
+		XMLReader xr = sp.getXMLReader();
+		xr.setContentHandler(this);
+		xr.parse(new InputSource(url.openStream()));
+		return this.phrases;
 		
 	}
 	
