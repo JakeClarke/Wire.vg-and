@@ -1,5 +1,7 @@
 package wirevg.apps.viewer;
 
+import java.util.ArrayList;
+
 import wirevg.apps.viewer.resources.Comment;
 import wirevg.apps.viewer.resources.Post;
 import wirevg.apps.viewer.resources.handlers.postHandler;
@@ -20,7 +22,7 @@ public class PostDetailsActivity extends Activity {
 	int postID = 0;
 	
 	Post currentPost;
-	
+	ArrayList<Post> Posts;
 	postHandler ph = new postHandler();;
 	
 	Button viewPostButton;
@@ -53,8 +55,13 @@ public class PostDetailsActivity extends Activity {
         	return;
         }
         
-        ph.getPost(postID);
-        this.currentPost = ph.Posts.get(0);
+        try {
+			this.Posts = ph.getPost(postID);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        this.currentPost = Posts.get(0);
         this.postTitle.setText(this.currentPost.Title);
         this.feedName.setText(this.currentPost.FeedName);
         this.commentsView.setText("Number of comments: " + this.currentPost.Comments.size() + "\n");
