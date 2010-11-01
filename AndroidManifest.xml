@@ -10,15 +10,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/app_name" android:name=".trendViewActivity" android:configChanges="orientation">
+        <activity android:label="@string/app_name" android:name=".trendViewActivity" android:configChanges="orientation" android:theme="@style/windu">
             <intent-filter>
                 
                 
             </intent-filter>
         </activity>
 
-    <activity android:name=".ListPosts" android:configChanges="orientation"></activity>
-<activity android:name="PostDetailsActivity"></activity>
+    <activity android:name=".ListPosts" android:configChanges="orientation" android:theme="@style/windu"></activity>
+<activity android:name="PostDetailsActivity" android:theme="@style/windu"></activity>
 </application>
 
 

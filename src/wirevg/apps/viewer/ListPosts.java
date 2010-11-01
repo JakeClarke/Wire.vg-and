@@ -70,7 +70,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
+		this.setContentView(R.layout.windulistview);
 		aa = new ArrayAdapter<Post>(this, R.layout.postlist_item, this.posts);
 		setListAdapter(aa);
 		
@@ -173,6 +173,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(message);
 		builder.setCancelable(false);
+		builder.setInverseBackgroundForced(true);
 		builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   dialog.dismiss();
