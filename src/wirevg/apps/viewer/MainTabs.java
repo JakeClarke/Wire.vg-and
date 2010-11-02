@@ -3,7 +3,9 @@ package wirevg.apps.viewer;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class MainTabs extends TabActivity {
 
@@ -14,6 +16,7 @@ public class MainTabs extends TabActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.maintabs);
         tabHost = this.getTabHost();
+        tabHost.setBackgroundResource(R.drawable.icon);
         Intent i;
         TabHost.TabSpec spec;
         
@@ -21,26 +24,42 @@ public class MainTabs extends TabActivity {
         i = new Intent(this, ListPosts.class);
 		i.putExtra(ListPosts.MODE, ListPosts.MODE_HASHCODE);
 		i.putExtra(ListPosts.KEY_PARAMETER, "frontpage");
+		
+		LayoutInflater inflater = this.getLayoutInflater();
+		
+		
+		
+		TextView tabIndicator = (TextView) inflater.inflate(R.layout.tabselectorlayout, null);
+		tabIndicator.setText("Wire.vg");
         
-        spec = tabHost.newTabSpec("frontpage").setIndicator("Wire.vg");
+        spec = tabHost.newTabSpec("frontpage");
+        spec.setIndicator(tabIndicator);
         spec.setContent(i);
         this.tabHost.addTab(spec);
         
         // begin recent posts definition
+        
+        tabIndicator = (TextView) inflater.inflate(R.layout.tabselectorlayout, null);
+		tabIndicator.setText("Recent");
+        
         i = new Intent(this, ListPosts.class);
         i.putExtra(ListPosts.KEY_ORDER, ListPosts.ORDER_TIME);
         
-        spec = tabHost.newTabSpec("recent").setIndicator("Recent");
+        spec = tabHost.newTabSpec("recent").setIndicator(tabIndicator);
         spec.setContent(i);
         this.tabHost.addTab(spec);
         
         // begin current trends tab definition
+        tabIndicator = (TextView) inflater.inflate(R.layout.tabselectorlayout, null);
+		tabIndicator.setText("Current trends");
+        
         i = new Intent(this, trendViewActivity.class);
         
-        spec = tabHost.newTabSpec("trends").setIndicator("Current trends");
+        spec = tabHost.newTabSpec("trends").setIndicator(tabIndicator);
         spec.setContent(i);
         this.tabHost.addTab(spec);
         
+        this.tabHost.setCurrentTab(1);
 
 	
 	}

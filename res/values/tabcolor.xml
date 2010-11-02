@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<color name="tab_selected">#FF6666</color>
+<color name="tab_focus">#660000</color>
+<color name="tab_pressed">#CF1111</color>
+<color name="tab_default">#CF0000</color>
+</resources>
