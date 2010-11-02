@@ -3,10 +3,12 @@ package wirevg.apps.viewer;
 import java.util.ArrayList;
 
 import wirevg.apps.viewer.resources.handlers.trendHandler;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -33,6 +35,17 @@ public class trendViewActivity extends ListActivity implements OnItemClickListen
 		}
 	};
 	
+	Runnable getFailed = new Runnable()
+	{
+
+		@Override
+		public void run() {
+			showDialog("Failed", "Could not get trends! Use fresh in menu to try again.", false);
+			progress.dismiss();
+		}
+		
+	};
+	
 	@Override
 	public void onCreate (Bundle savedInstanceData){
 		super.onCreate(savedInstanceData);
@@ -57,6 +70,24 @@ public class trendViewActivity extends ListActivity implements OnItemClickListen
 		gt.start();
 		
 		
+	}
+	
+	private void showDialog(String title, String message, final boolean forceClose)
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setPositiveButton("Ok", new OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (forceClose) {
+							trendViewActivity.this.finish();
+						}
+					}
+				});
+		builder.setCancelable(false);
+		builder.setTitle(title);
+		builder.setMessage(message);
+		builder.create().show();
 	}
 	
 	@Override
@@ -100,8 +131,8 @@ public class trendViewActivity extends ListActivity implements OnItemClickListen
 				trendViewActivity.this.phrases = th.getTrends();
 				mHandler.post(completedGet);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				mHandler.post(getFailed);
 			}
 		}
 		
