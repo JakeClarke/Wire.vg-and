@@ -62,7 +62,8 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 	
 	final Runnable getPostsFail = new Runnable() {
 		public void run() {
-			getFailedDialog("Failed to get posts");
+			getFailedDialog("Failed to get post listing.\nUse refresh in menu to retry.", false);
+			progress.dismiss();
 		}
 	};
 	
@@ -132,7 +133,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 			
 		} else {
 			// nothing will happen
-			this.getFailedDialog("Nothing to get");
+			this.getFailedDialog("Nothing to get", true);
 		}
 
 	}
@@ -162,14 +163,15 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 	}
 
 	private void noPostsDialog() {
-		this.getFailedDialog("No posts match the search.");
+		this.getFailedDialog("No posts match the search.", true);
 	}
 	
 	private void timeOutDialog() {
-		this.getFailedDialog("Get posts timeout.");
+		this.progress.dismiss();
+		this.getFailedDialog("Get posts timeout. \nPress refresh in the menu to try again.", false);
 	}
 	
-	private void getFailedDialog(String message) {
+	private void getFailedDialog(String message,final boolean forceClose) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(message);
 		builder.setCancelable(false);
@@ -177,7 +179,9 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 		builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   dialog.dismiss();
-	               ListPosts.this.finish();
+	               if (forceClose) {
+					ListPosts.this.finish();
+				}
 	           }});
 		AlertDialog d = builder.create();
 		d.show();
