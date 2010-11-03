@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class trendViewActivity extends ListActivity implements OnItemClickListener {
 
@@ -40,7 +41,7 @@ public class trendViewActivity extends ListActivity implements OnItemClickListen
 
 		@Override
 		public void run() {
-			showDialog("Failed", "Could not get trends! Use fresh in menu to try again.", false);
+			showDialog("Failed", "Could not get trends! Use refresh in menu to try again.", false);
 			progress.dismiss();
 		}
 		
@@ -50,9 +51,13 @@ public class trendViewActivity extends ListActivity implements OnItemClickListen
 	public void onCreate (Bundle savedInstanceData){
 		super.onCreate(savedInstanceData);
 		this.setTitle("Current trends: ");
+		
+		this.setContentView(R.layout.windulistview);
 
 		refresh();
-		getListView().setOnItemClickListener(this);
+		ListView lv = getListView();
+		lv.setOnItemClickListener(this);
+		
 	}
 
 	private void refresh() {
