@@ -24,6 +24,7 @@ public class MainTabs extends TabActivity {
         i = new Intent(this, ListPosts.class);
 		i.putExtra(ListPosts.MODE, ListPosts.MODE_HASHCODE);
 		i.putExtra(ListPosts.KEY_PARAMETER, "frontpage");
+		i.putExtra(ListPosts.NO_SET_TITLE, true);
 		
 		LayoutInflater inflater = this.getLayoutInflater();
 		
@@ -44,6 +45,7 @@ public class MainTabs extends TabActivity {
         
         i = new Intent(this, ListPosts.class);
         i.putExtra(ListPosts.KEY_ORDER, ListPosts.ORDER_TIME);
+        i.putExtra(ListPosts.NO_SET_TITLE, true);
         
         spec = tabHost.newTabSpec("recent").setIndicator(tabIndicator);
         spec.setContent(i);
@@ -54,6 +56,7 @@ public class MainTabs extends TabActivity {
 		tabIndicator.setText("Current trends");
         
         i = new Intent(this, trendViewActivity.class);
+        i.putExtra(ListPosts.NO_SET_TITLE, true);
         
         spec = tabHost.newTabSpec("trends").setIndicator(tabIndicator);
         spec.setContent(i);

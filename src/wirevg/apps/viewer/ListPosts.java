@@ -35,6 +35,7 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 	static final String STATUS_COMPLETE = "complete";
 	public static final String KEY_ORDER = "order";
 	public static final String ORDER_TIME = "time";
+	public static final String NO_SET_TITLE = "settitle";
 	
 	
 	ProgressDialog progress;
@@ -155,7 +156,10 @@ public class ListPosts extends ListActivity  implements OnItemClickListener{
 			noPostsDialog();
 		}
 		
-		this.setTitle(newTitle);
+		// do not set the title if it is requested.
+		if(!getIntent().getExtras().getBoolean(NO_SET_TITLE))
+			this.setTitle(newTitle);
+		
 		aa.clear();
 		for(Post p : this.posts){
 			aa.add(p);

@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 public class trendViewActivity extends ListActivity implements OnItemClickListener {
 
+	public static final String NO_SET_TITLE = "settitle";
 	trendHandler th;
 	ArrayList<String> phrases;
 	ProgressDialog progress;
@@ -50,7 +51,10 @@ public class trendViewActivity extends ListActivity implements OnItemClickListen
 	@Override
 	public void onCreate (Bundle savedInstanceData){
 		super.onCreate(savedInstanceData);
-		this.setTitle("Current trends: ");
+		
+		// do not set the title if it is requested.
+		if(!getIntent().getExtras().getBoolean(NO_SET_TITLE))
+			this.setTitle("Current trends: ");
 		
 		this.setContentView(R.layout.windulistview);
 
